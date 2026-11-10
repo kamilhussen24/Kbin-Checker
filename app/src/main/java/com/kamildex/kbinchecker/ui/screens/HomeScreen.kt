@@ -44,7 +44,6 @@ import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -62,7 +61,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
@@ -90,6 +88,8 @@ import com.kamildex.kbinchecker.ui.LookupError
 import com.kamildex.kbinchecker.ui.MainViewModel
 import com.kamildex.kbinchecker.ui.components.ActionChip
 import com.kamildex.kbinchecker.ui.components.AppCard
+import com.kamildex.kbinchecker.ui.components.BrandGradient
+import com.kamildex.kbinchecker.ui.components.BrandGradientHorizontal
 import com.kamildex.kbinchecker.ui.components.BrandMark
 import com.kamildex.kbinchecker.ui.components.Chevron
 import com.kamildex.kbinchecker.ui.components.CircleIconButton
@@ -224,22 +224,28 @@ fun HomeScreen(
                 )
             }
             Spacer(Modifier.height(12.dp))
-            Button(
-                onClick = submit,
-                enabled = !loading,
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth().height(54.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(54.dp)
+                    .graphicsLayer { alpha = if (loading) 0.75f else 1f }
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(BrandGradientHorizontal)
+                    .clickable(enabled = !loading, role = Role.Button, onClick = submit),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 if (loading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(20.dp),
                         strokeWidth = 2.dp,
-                        color = colors.primary
+                        color = Color.White
                     )
                 } else {
                     Icon(
                         imageVector = Icons.Rounded.Search,
                         contentDescription = null,
+                        tint = Color.White,
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -247,7 +253,8 @@ fun HomeScreen(
                 Text(
                     text = if (loading) "Checking" else "Check BIN",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White
                 )
             }
         }
@@ -373,8 +380,8 @@ private fun HeroCard(query: String, scheme: CardScheme) {
     ) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             val center = Offset(size.width / 2f, size.height * 0.60f)
-            drawCircle(color = accent.copy(alpha = 0.05f), radius = size.width * 0.47f, center = center)
-            drawCircle(color = accent.copy(alpha = 0.06f), radius = size.width * 0.33f, center = center)
+            drawCircle(color = accent.copy(alpha = 0.06f), radius = size.width * 0.47f, center = center)
+            drawCircle(color = accent.copy(alpha = 0.07f), radius = size.width * 0.33f, center = center)
         }
         Box(
             modifier = Modifier
@@ -387,7 +394,7 @@ private fun HeroCard(query: String, scheme: CardScheme) {
                     spotColor = accent
                 )
                 .clip(RoundedCornerShape(20.dp))
-                .background(Brush.linearGradient(listOf(Color(0xFF2D2A45), Color(0xFF12111B))))
+                .background(BrandGradient)
                 .padding(18.dp)
         ) {
             // Chip
@@ -396,7 +403,7 @@ private fun HeroCard(query: String, scheme: CardScheme) {
                     .align(Alignment.TopStart)
                     .size(width = 36.dp, height = 27.dp)
                     .clip(RoundedCornerShape(6.dp))
-                    .background(Brush.linearGradient(listOf(Color(0xFFF1E3B5), Color(0xFFC9B274))))
+                    .background(Color.White.copy(alpha = 0.9f))
             )
             // Contactless mark
             Canvas(modifier = Modifier.align(Alignment.TopEnd).size(24.dp)) {
@@ -405,7 +412,7 @@ private fun HeroCard(query: String, scheme: CardScheme) {
                 for (i in 1..3) {
                     val r = size.width * 0.25f * i
                     drawArc(
-                        color = Color.White.copy(alpha = 0.75f),
+                        color = Color.White.copy(alpha = 0.9f),
                         startAngle = -42f,
                         sweepAngle = 84f,
                         useCenter = false,
@@ -427,7 +434,7 @@ private fun HeroCard(query: String, scheme: CardScheme) {
             )
             Text(
                 text = "KBin",
-                color = Color.White.copy(alpha = 0.92f),
+                color = Color.White,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.align(Alignment.BottomStart)
@@ -435,7 +442,7 @@ private fun HeroCard(query: String, scheme: CardScheme) {
             if (scheme != CardScheme.UNKNOWN) {
                 Text(
                     text = scheme.label.uppercase(),
-                    color = Color(0xFFB9AEFF),
+                    color = Color.White.copy(alpha = 0.92f),
                     fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
                     letterSpacing = 1.sp,

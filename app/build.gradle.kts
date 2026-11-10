@@ -18,7 +18,7 @@ android {
         applicationId = "com.kamildex.kbinchecker"
         minSdk = 24
         targetSdk = 36
-        versionName = "1.0.0"
+        versionName = "1.0.1"
         // Google Play needs a higher versionCode on every upload.
         // GitHub Actions passes its run number; local builds fall back to 1.
         versionCode = (System.getenv("VERSION_CODE") ?: "1").toInt()

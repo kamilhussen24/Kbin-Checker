@@ -41,9 +41,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kamildex.kbinchecker.data.BinInfo
 import com.kamildex.kbinchecker.data.CardScheme
+import com.kamildex.kbinchecker.ui.theme.BrandOrange
+import com.kamildex.kbinchecker.ui.theme.BrandPink
 
+/** KDex brand gradient, diagonal. Used for the logo tile and the hero card. */
 val BrandGradient: Brush
-    get() = Brush.linearGradient(listOf(Color(0xFF7A5CFF), Color(0xFF4A2FD0)))
+    get() = Brush.linearGradient(listOf(BrandOrange, BrandPink))
+
+/** Same gradient left to right, for wide elements such as the main button. */
+val BrandGradientHorizontal: Brush
+    get() = Brush.horizontalGradient(listOf(BrandOrange, BrandPink))
 
 /** Rounded brand tile used in the header and on the About screen. */
 @Composable
