@@ -130,9 +130,8 @@ jobs:
           tag_name: v${{ steps.version.outputs.version }}-${{ github.run_number }}
           name: KBin Checker v${{ steps.version.outputs.version }} (build ${{ github.run_number }})
           body: KBin Checker v${{ steps.version.outputs.version }}, versionCode ${{ github.run_number }}
-          files: |
-            app/build/outputs/apk/release/*.apk
-            app/build/outputs/bundle/release/*.aab
+          # Only the APK is attached. The AAB is for Google Play and stays in Artifacts.
+          files: app/build/outputs/apk/release/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
