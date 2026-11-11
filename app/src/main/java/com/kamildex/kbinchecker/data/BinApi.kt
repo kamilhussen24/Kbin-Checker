@@ -18,7 +18,7 @@ sealed class LookupResult {
 }
 
 /**
- * Minimal HTTPS client for the BIN data provider (HandyAPI).
+ * Minimal HTTPS client for the lookup endpoint (own relay, or HandyAPI directly).
  * Uses the platform HttpURLConnection so the app ships with no networking library.
  * Only the 6 to 8 digit BIN is ever sent.
  */

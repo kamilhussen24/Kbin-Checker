@@ -30,6 +30,8 @@ app/src/main/java/com/kamildex/kbinchecker/
 .github/workflows/
   build.yml               debug / release / both
   keystore.yml            one-time release key generator
+server/
+  cloudflare-worker.js    lookup relay that hides the provider key and caches results
 docs/
   PLAY_STORE_GUIDE.md     listing text and Play Console answers
   privacy-policy.html     page to host for the Play Store privacy policy URL
@@ -60,7 +62,7 @@ Add these under **Settings > Secrets and variables > Actions**:
 | `KEY_PASSWORD` | key password, at least 6 characters |
 | `KEY_ALIAS` | key name, for example `kbin` |
 | `KEYSTORE_BASE64` | the keystore file encoded as base64 |
-| `BIN_API_KEY` | optional, your HandyAPI key |
+| `BIN_API_URL` | address of your Cloudflare Worker relay, for example `https://kbin.your-name.workers.dev/bin/` |
 
 No keystore yet? Add the first three secrets, then run **Actions > Generate Release Keystore**
 (type `YES` to confirm). Download its artifact, copy the content of `keystore_base64.txt` into the
@@ -75,10 +77,12 @@ Never generate a second key after the app is on Google Play. Updates must be sig
 
 ## BIN data provider
 
-Lookups use HandyAPI (`https://data.handyapi.com/bin/{bin}`). The app works without a key within
-the provider's free limits. For a published app, create a free HandyAPI account and add the key as
-the `BIN_API_KEY` secret so the build includes it. A key shipped inside an app can be extracted,
-so use a key that is meant for client apps and keep an eye on its usage.
+BIN records come from HandyAPI. A published build should not call the provider directly or carry
+its key. Instead, deploy the small Cloudflare Worker in `server/` (steps in `server/README.md`) and
+set its address as the `BIN_API_URL` secret. The Worker holds the key and caches every result.
+
+Without `BIN_API_URL` the app calls HandyAPI directly without a key, which is fine for a quick
+test build only. Before publishing, confirm with HandyAPI that their terms allow this use.
 
 ## Before publishing
 

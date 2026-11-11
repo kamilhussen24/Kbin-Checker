@@ -18,13 +18,19 @@ android {
         applicationId = "com.kamildex.kbinchecker"
         minSdk = 24
         targetSdk = 36
-        versionName = "1.0.1"
+        versionName = "1.0.2"
         // Google Play needs a higher versionCode on every upload.
         // GitHub Actions passes its run number; local builds fall back to 1.
         versionCode = (System.getenv("VERSION_CODE") ?: "1").toInt()
 
-        // Optional HandyAPI key, injected from the BIN_API_KEY GitHub secret.
-        buildConfigField("String", "BIN_API_KEY", "\"${System.getenv("BIN_API_KEY") ?: ""}\"")
+        // Lookup endpoint. Set the BIN_API_URL GitHub secret to your own relay
+        // (see server/README.md); without it the app calls the provider directly.
+        val binApiUrl = System.getenv("BIN_API_URL")?.trim().takeUnless { it.isNullOrEmpty() }
+            ?: "https://data.handyapi.com/bin/"
+        buildConfigField("String", "BIN_API_URL", "\"$binApiUrl\"")
+
+        // Optional provider key for direct calls. Leave unset when a relay is used.
+        buildConfigField("String", "BIN_API_KEY", "\"${System.getenv("BIN_API_KEY")?.trim() ?: ""}\"")
     }
 
     signingConfigs {

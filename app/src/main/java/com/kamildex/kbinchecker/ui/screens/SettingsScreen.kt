@@ -134,8 +134,9 @@ fun SettingsScreen(vm: MainViewModel, onBack: () -> Unit) {
                 CardTitle("Data source")
                 Spacer(Modifier.height(8.dp))
                 BodyText(
-                    "BIN records are provided by HandyAPI. Only the digits you enter are sent, over an " +
-                        "encrypted connection. Results are informational and may be incomplete."
+                    "BIN records are provided by HandyAPI through our lookup service. Only the digits " +
+                        "you enter are sent, over an encrypted connection. Results are informational " +
+                        "and may be incomplete."
                 )
             }
             Spacer(Modifier.height(24.dp))

@@ -8,8 +8,8 @@ object AppConfig {
     /** Support address shown on the About screen. Leave empty to hide the row. */
     const val CONTACT_EMAIL = ""
 
-    /** BIN data provider endpoint. The BIN is appended to this URL. */
-    const val BIN_API_URL = "https://data.handyapi.com/bin/"
+    /** Lookup endpoint, set at build time (BIN_API_URL secret). The BIN is appended to it. */
+    val BIN_API_URL: String = BuildConfig.BIN_API_URL.trimEnd('/') + "/"
 
     /** Cached results older than this are fetched again. */
     const val CACHE_MAX_AGE_MS = 30L * 24 * 60 * 60 * 1000

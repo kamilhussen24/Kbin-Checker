@@ -94,8 +94,9 @@ truthfully for the version you publish.
 
 How the app actually behaves:
 
-- The 6 to 8 digit BIN is sent over HTTPS to the data provider (HandyAPI) to get the result.
-  It is not linked to a user, account or device ID and the app does not store it on any server.
+- The 6 to 8 digit BIN is sent over HTTPS to your lookup service (Cloudflare Worker), which gets
+  the record from the data provider (HandyAPI) and caches it by BIN only. It is not linked to a
+  user, account or device ID.
 - History, favorites and settings stay on the device.
 - No analytics, ads or crash reporting SDKs.
 

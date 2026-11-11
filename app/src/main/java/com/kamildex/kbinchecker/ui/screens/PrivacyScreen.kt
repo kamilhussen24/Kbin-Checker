@@ -22,9 +22,11 @@ private val SECTIONS = listOf(
         "transmit full card numbers, expiry dates, CVV codes or cardholder names.",
     "What the app sends" to
         "When you tap Check BIN, the 6 to 8 digits you entered are sent over an encrypted (HTTPS) " +
-        "connection to our BIN data provider, HandyAPI (handyapi.com), to retrieve the public " +
-        "issuer record. As with any internet request, the provider can see your IP address. " +
-        "The request contains no name, device identifier or other personal information.",
+        "connection to our lookup service, which is hosted on Cloudflare and retrieves the public " +
+        "issuer record from our BIN data provider, HandyAPI (handyapi.com). As with any internet " +
+        "request, these services can see your IP address. The request contains no name, device " +
+        "identifier or other personal information, and results are cached by BIN only, with no " +
+        "link to who asked.",
     "What stays on your device" to
         "Your lookup history, favorites and settings are stored only in the app's private storage " +
         "on your device. They are never uploaded. You can switch history off or clear it in " +

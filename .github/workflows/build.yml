@@ -17,7 +17,9 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   # Google Play needs a higher versionCode on every upload, so the run number is used.
   VERSION_CODE: ${{ github.run_number }}
-  # Optional. Add a BIN_API_KEY secret to use your own HandyAPI key.
+  # Recommended. Address of your Cloudflare Worker relay, see server/README.md.
+  BIN_API_URL: ${{ secrets.BIN_API_URL }}
+  # Only for direct provider calls without a relay. Leave unset when BIN_API_URL is used.
   BIN_API_KEY: ${{ secrets.BIN_API_KEY }}
 
 jobs:
