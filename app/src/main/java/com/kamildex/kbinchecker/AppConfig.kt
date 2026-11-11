@@ -2,10 +2,17 @@ package com.kamildex.kbinchecker
 
 /** Values you may want to change before publishing. */
 object AppConfig {
-    /** Public website shown on the About screen. */
+    /**
+     * Optional page about this app, shown as "Website" on the About screen.
+     * Leave empty to hide the row. Use a page dedicated to the app, not a page
+     * that promotes other products.
+     */
     const val WEBSITE_URL = "https://kamildex.com"
 
-    /** Support address shown on the About screen. Leave empty to hide the row. */
+    /**
+     * Public support address. Shown as "Contact support" on the About screen and
+     * in the in-app privacy policy. Leave empty to hide it.
+     */
     const val CONTACT_EMAIL = "contact@kamildex.com"
 
     /** Lookup endpoint, set at build time (BIN_API_URL secret). The BIN is appended to it. */

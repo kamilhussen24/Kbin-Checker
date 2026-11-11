@@ -15,6 +15,13 @@ import com.kamildex.kbinchecker.AppConfig
 import com.kamildex.kbinchecker.ui.components.AppCard
 import com.kamildex.kbinchecker.ui.components.ScreenTopBar
 
+private val CONTACT_LINE =
+    if (AppConfig.CONTACT_EMAIL.isNotBlank()) {
+        "Questions can be sent to " + AppConfig.CONTACT_EMAIL + "."
+    } else {
+        "Questions can be sent to the support email shown on the app's Google Play page."
+    }
+
 /** In-app copy of the privacy policy. Keep it in sync with docs/privacy-policy.html. */
 private val SECTIONS = listOf(
     "Summary" to
@@ -36,8 +43,8 @@ private val SECTIONS = listOf(
     "Children" to
         "KBin Checker is a general reference tool and is not directed at children.",
     "Changes and contact" to
-        "If this policy changes, the updated version will be published with the app. Questions " +
-        "can be sent through " + AppConfig.WEBSITE_URL + "."
+        "If this policy changes, the updated version will be published with the app. " +
+        CONTACT_LINE
 )
 
 @Composable

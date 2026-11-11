@@ -117,14 +117,18 @@ fun AboutScreen(onOpenPrivacy: () -> Unit) {
             LinkRow(Icons.Outlined.Share, "Share this app") {
                 shareText(context, "KBin Checker: look up any card BIN in seconds.\n$STORE_URL")
             }
-            RowDivider()
-            LinkRow(Icons.Outlined.Language, "Website") {
-                openUrl(context, AppConfig.WEBSITE_URL)
+            if (AppConfig.WEBSITE_URL.isNotBlank()) {
+                RowDivider()
+                LinkRow(Icons.Outlined.Language, "Website") {
+                    openUrl(context, AppConfig.WEBSITE_URL)
+                }
             }
             if (AppConfig.CONTACT_EMAIL.isNotBlank()) {
                 RowDivider()
                 LinkRow(Icons.Outlined.Email, "Contact support") {
-                    openUrl(context, "mailto:${AppConfig.CONTACT_EMAIL}")
+                    if (!openUrl(context, "mailto:${AppConfig.CONTACT_EMAIL}")) {
+                        Toast.makeText(context, AppConfig.CONTACT_EMAIL, Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }

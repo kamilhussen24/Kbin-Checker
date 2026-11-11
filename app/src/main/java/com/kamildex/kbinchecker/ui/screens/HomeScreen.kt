@@ -379,9 +379,10 @@ private fun HeroCard(query: String, scheme: CardScheme) {
         contentAlignment = Alignment.Center
     ) {
         Canvas(modifier = Modifier.fillMaxSize()) {
+            // Sized from the height so the halo stays below the header on every screen width.
             val center = Offset(size.width / 2f, size.height * 0.60f)
-            drawCircle(color = accent.copy(alpha = 0.06f), radius = size.width * 0.47f, center = center)
-            drawCircle(color = accent.copy(alpha = 0.07f), radius = size.width * 0.33f, center = center)
+            drawCircle(color = accent.copy(alpha = 0.06f), radius = size.height * 0.58f, center = center)
+            drawCircle(color = accent.copy(alpha = 0.07f), radius = size.height * 0.40f, center = center)
         }
         Box(
             modifier = Modifier
@@ -433,7 +434,7 @@ private fun HeroCard(query: String, scheme: CardScheme) {
                 modifier = Modifier.align(Alignment.CenterStart).padding(top = 26.dp)
             )
             Text(
-                text = "KBin",
+                text = "KDex",
                 color = Color.White,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
