@@ -4,7 +4,7 @@
 
 **Download:** [KBin Checker on Google Play](https://play.google.com/store/apps/details?id=com.kamildex.kbinchecker)
 
-A light, Minimal Android app that looks up a card BIN (the first 6 to 8 digits of a payment card)
+A light, minimal Android app that looks up a card BIN (the first 6 to 8 digits of a payment card)
 and shows the issuing bank, network, card type, level and country.
 
 - Package: `com.kamildex.kbinchecker`
