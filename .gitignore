@@ -1,0 +1,16 @@
+*.iml
+.gradle/
+.kotlin/
+.idea/
+build/
+local.properties
+.DS_Store
+captures/
+.cxx/
+.externalNativeBuild/
+
+# Release signing material must never be committed.
+# The shared debug keystore (app/keystore/debug.keystore) is intentionally tracked.
+app/keystore/android.keystore
+*.jks
+keystore_base64.txt
