@@ -8,6 +8,7 @@ plugins {
 
 // Release signing is supplied by GitHub Actions (see .github/workflows/build.yml).
 val releaseKeystore = file("keystore/android.keystore")
+val debugKeystore = file("keystore/debug.keystore")
 val hasReleaseSigning = releaseKeystore.exists() && !System.getenv("STORE_PASSWORD").isNullOrBlank()
 
 android {
@@ -35,11 +36,14 @@ android {
 
     signingConfigs {
         // Shared debug key so every debug build can be installed over the previous one.
-        getByName("debug") {
-            storeFile = file("keystore/debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
+        // If the file is missing, Android falls back to its own default debug key.
+        if (debugKeystore.exists()) {
+            getByName("debug") {
+                storeFile = debugKeystore
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
         }
         if (hasReleaseSigning) {
             create("release") {
@@ -55,7 +59,7 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            signingConfig = signingConfigs.getByName("debug")
+            if (debugKeystore.exists()) signingConfig = signingConfigs.getByName("debug")
         }
         release {
             isMinifyEnabled = true
