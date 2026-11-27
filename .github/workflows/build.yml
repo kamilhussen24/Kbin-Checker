@@ -74,12 +74,14 @@ jobs:
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          BIN_API_URL: ${{ secrets.BIN_API_URL }}
         run: |
           missing=""
           [ -z "$KEYSTORE_BASE64" ] && missing="$missing KEYSTORE_BASE64"
           [ -z "$STORE_PASSWORD" ] && missing="$missing STORE_PASSWORD"
           [ -z "$KEY_ALIAS" ] && missing="$missing KEY_ALIAS"
           [ -z "$KEY_PASSWORD" ] && missing="$missing KEY_PASSWORD"
+          [ -z "$BIN_API_URL" ] && missing="$missing BIN_API_URL"
           if [ -n "$missing" ]; then
             echo "::error::Missing repository secrets:$missing. See README.md, section 'Release signing'."
             exit 1

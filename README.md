@@ -45,7 +45,7 @@ docs/
 
 ## Build with GitHub Actions
 
-1. Create a **private** GitHub repository and upload every file and folder from this project
+1. Create a GitHub repository (**private** is best, and required while you generate the release key) and upload every file and folder from this project
    (including the hidden `.github` folder).
 2. Open **Actions > Build KBin Checker > Run workflow** and choose:
    - `debug`: test APK, no secrets needed

@@ -164,6 +164,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             if (historyStore.find(info.bin) == null) {
                 historyStore.upsert(updated)
+            } else if (!updated.favorite && !settingsStore.settings.value.saveHistory) {
+                // History is off, so an entry only existed because it was starred.
+                historyStore.delete(info.bin)
             } else {
                 historyStore.setFavorite(info.bin, updated.favorite)
             }

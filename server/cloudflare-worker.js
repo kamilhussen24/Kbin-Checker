@@ -13,7 +13,10 @@
  *   - each IP address may make PER_IP_LIMIT lookups per minute
  *   - at most DAILY_UPSTREAM_LIMIT new BINs per day are sent to HandyAPI,
  *     so one bad day cannot use up the whole monthly quota
+ *   - one IP address may trigger at most IP_DAILY_LIMIT new BINs per day, so a single
+ *     person or script cannot use up the whole daily number
  * Optional: add a plain text variable DAILY_LIMIT to change the daily number,
+ * IP_DAILY_LIMIT to change the per-IP number,
  * and a "Rate limiter" binding named RATE_LIMITER for a stricter per-IP limit.
  */
 
@@ -23,6 +26,7 @@ const NOT_FOUND_TTL = 6 * 60 * 60;     // keep "not found" for 6 hours
 
 const PER_IP_LIMIT = 30;               // lookups per IP address per minute
 const DAILY_UPSTREAM_LIMIT = 100;      // new BINs sent to HandyAPI per day (UTC)
+const IP_DAILY_LIMIT = 25;             // new BINs one IP address may trigger per day (UTC)
 
 // Per-IP counters live in memory only. They are never stored or logged.
 const ipHits = new Map();
@@ -99,6 +103,22 @@ export default {
       usedToday = 0;
     }
     if (usedToday >= dailyLimit) return reply({ Status: "LIMIT" }, 429);
+
+    // Per-IP daily cap, counted only for cache misses (cached BINs never reach this point).
+    const ipLimit = parseInt(env.IP_DAILY_LIMIT, 10) > 0 ? parseInt(env.IP_DAILY_LIMIT, 10) : IP_DAILY_LIMIT;
+    const ipKey = "__ip_" + ip + "_" + new Date(now).toISOString().slice(0, 10);
+    let ipUsed = 0;
+    try {
+      ipUsed = parseInt(await env.BIN_CACHE.get(ipKey), 10) || 0;
+    } catch (e) {
+      ipUsed = 0;
+    }
+    if (ipUsed >= ipLimit) return reply({ Status: "LIMIT" }, 429);
+    try {
+      await env.BIN_CACHE.put(ipKey, String(ipUsed + 1), { expirationTtl: 2 * 24 * 60 * 60 });
+    } catch (e) {
+      // Counting is best effort.
+    }
     try {
       await env.BIN_CACHE.put(counterKey, String(usedToday + 1), { expirationTtl: 2 * 24 * 60 * 60 });
     } catch (e) {
