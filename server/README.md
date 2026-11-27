@@ -65,7 +65,8 @@ Run the build workflow again. The new build talks to your Worker.
 - Limits: `DAILY_LIMIT` (default 100 new BINs per day for everyone) should be your provider plan's
   monthly quota divided by 30. `IP_DAILY_LIMIT` (default 25 new BINs per IP per day) stops one
   person from using the whole day. Both are optional plain text variables.
-- The Worker stores results by BIN only. It does not log who asked.
+- The Worker stores results by BIN only. For abuse limits it also keeps a one-way daily hash of each
+  IP address for up to 2 days, never the address itself. It does not log who asked.
 - To change provider later, edit only this Worker. The app does not need an update as long as the
   Worker returns the same JSON fields.
 

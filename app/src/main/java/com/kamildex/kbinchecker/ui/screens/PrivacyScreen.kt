@@ -33,7 +33,8 @@ private val SECTIONS = listOf(
         "issuer record from our BIN data provider, HandyAPI (handyapi.com). As with any internet " +
         "request, these services can see your IP address. The request contains no name, device " +
         "identifier or other personal information, and results are cached by BIN only, with no " +
-        "link to who asked.",
+        "link to who asked. To prevent abuse, the lookup service also keeps a one-way hash of " +
+        "your IP address (not the address itself) for up to two days to count daily requests.",
     "What stays on your device" to
         "Your lookup history, favorites and settings are stored only in the app's private storage " +
         "on your device. They are never uploaded. You can switch history off or clear it in " +

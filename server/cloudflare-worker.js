@@ -14,7 +14,8 @@
  *   - at most DAILY_UPSTREAM_LIMIT new BINs per day are sent to HandyAPI,
  *     so one bad day cannot use up the whole monthly quota
  *   - one IP address may trigger at most IP_DAILY_LIMIT new BINs per day, so a single
- *     person or script cannot use up the whole daily number
+ *     person or script cannot use up the whole daily number. IPs are only kept as a
+ *     one-way daily hash for 2 days, never as the address itself
  * Optional: add a plain text variable DAILY_LIMIT to change the daily number,
  * IP_DAILY_LIMIT to change the per-IP number,
  * and a "Rate limiter" binding named RATE_LIMITER for a stricter per-IP limit.
@@ -28,7 +29,8 @@ const PER_IP_LIMIT = 30;               // lookups per IP address per minute
 const DAILY_UPSTREAM_LIMIT = 100;      // new BINs sent to HandyAPI per day (UTC)
 const IP_DAILY_LIMIT = 25;             // new BINs one IP address may trigger per day (UTC)
 
-// Per-IP counters live in memory only. They are never stored or logged.
+// The per-minute counters live in memory only and are never logged. The per-day counter is kept
+// in KV under a one-way daily hash of the IP address (never the address itself) for up to 2 days.
 const ipHits = new Map();
 
 function overIpLimit(ip, now) {
@@ -106,7 +108,14 @@ export default {
 
     // Per-IP daily cap, counted only for cache misses (cached BINs never reach this point).
     const ipLimit = parseInt(env.IP_DAILY_LIMIT, 10) > 0 ? parseInt(env.IP_DAILY_LIMIT, 10) : IP_DAILY_LIMIT;
-    const ipKey = "__ip_" + ip + "_" + new Date(now).toISOString().slice(0, 10);
+    const day = new Date(now).toISOString().slice(0, 10);
+    const digest = await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(ip + "|" + day + "|" + env.HANDY_API_KEY)
+    );
+    const ipHash = [...new Uint8Array(digest)].slice(0, 12)
+      .map((b) => b.toString(16).padStart(2, "0")).join("");
+    const ipKey = "__ip_" + ipHash + "_" + day;
     let ipUsed = 0;
     try {
       ipUsed = parseInt(await env.BIN_CACHE.get(ipKey), 10) || 0;

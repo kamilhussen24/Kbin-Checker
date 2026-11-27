@@ -29,7 +29,7 @@ const PRIVACY_HTML = `<!DOCTYPE html>
 <body>
 <main>
   <h1>KBin Checker Privacy Policy</h1>
-  <p class="meta">Effective date: 11 November 2026</p>
+  <p class="meta">Last updated: 27 November 2026</p>
 
   <h2>Summary</h2>
   <p>KBin Checker has no accounts, no ads and no analytics. It does not ask for, store or transmit
@@ -41,7 +41,8 @@ const PRIVACY_HTML = `<!DOCTYPE html>
   record from our BIN data provider, HandyAPI (<a href="https://www.handyapi.com">handyapi.com</a>).
   As with any internet request, these services can see your IP address. The request contains no name,
   device identifier or other personal information, and results are cached by BIN only, with no link
-  to who asked.</p>
+  to who asked. To prevent abuse, the lookup service also keeps a one-way hash of your IP address (not
+  the address itself) for up to two days to count daily requests.</p>
 
   <h2>What stays on your device</h2>
   <p>Your lookup history, favorites and settings are stored only in the app's private storage on
